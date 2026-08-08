@@ -3,62 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portofolio - Debora Sinurat</title>
+    <title>Debora Sinurat - Terminal Portfolio</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            text-align: center;
         }
-        header {
-            background-color: #24292e;
-            color: white;
-            padding: 2.5rem 1rem;
+        body {
+            background-color: #0d1117;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        section {
-            padding: 2rem 1rem;
-            max-width: 700px;
-            margin: auto;
-        }
-        .card {
-            background: white;
-            padding: 1.5rem;
-            margin: 1rem 0;
+        .terminal {
+            background-color: #161b22;
+            width: 100%;
+            max-width: 800px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #30363d;
+            overflow: hidden;
+        }
+        .terminal-header {
+            background-color: #21262d;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #30363d;
+        }
+        .btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+        .title {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .terminal-body {
+            padding: 20px;
+            min-height: 350px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .line {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .prompt {
+            color: #58a6ff;
+        }
+        .user-input-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        input {
+            background: transparent;
+            border: none;
+            color: #f0f6fc;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            flex: 1;
         }
         a {
-            color: #0366d6;
-            text-decoration: none;
+            color: #58a6ff;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Halo, Saya Debora Sinurat 👋</h1>
-        <p>Selamat datang di website portofolio saya!</p>
-    </header>
-
-    <section>
-        <div class="card">
-            <h2>Tentang Saya</h2>
-            <p>Saya adalah seorang profesional/pelajar yang tertarik pada bidang teknologi, desain, dan pengembangan web.</p>
+<div class="terminal">
+    <div class="terminal-header">
+        <span class="btn red"></span>
+        <span class="btn yellow"></span>
+        <span class="btn green"></span>
+        <span class="title">debora@portfolio:~</span>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+        <div class="line">
+            Selamat datang di Terminal Portofolio <strong>Debora Sinurat</strong>! 🚀<br>
+            Ketik <span style="color:#ffbd2e;">'help'</span> untuk melihat daftar perintah yang tersedia.
         </div>
-
-        <div class="card">
-            <h2>Keahlian (Skills)</h2>
-            <p>HTML • CSS • JavaScript • Microsoft Office • Problem Solving</p>
+        <div id="output"></div>
+        <div class="user-input-line">
+            <span class="prompt">debora@portfolio:~$</span>
+            <input type="text" id="command-input" autofocus autocomplete="off">
         </div>
+    </div>
+</div>
 
-        <div class="card">
-            <h2>Kontak</h2>
-            <p>Email: <a href="mailto:emailanda@gmail.com">emailanda@gmail.com</a></p>
-        </div>
-    </section>
+<script>
+    const input = document.getElementById('command-input');
+    const output = document.getElementById('output');
+    const terminalBody = document.getElementById('terminal-body');
+
+    // Daftar perintah terminal
+    const commands = {
+        'help': 'Perintah tersedia:<br>- <span style="color:#ffbd2e;">about</span> : Tentang saya<br>- <span style="color:#ffbd2e;">skills</span> : Keahlian saya<br>- <span style="color:#ffbd2e;">contact</span> : Informasi kontak<br>- <span style="color:#ffbd2e;">clear</span> : Bersihkan layar terminal',
+        'about': 'Halo! Saya <strong>Debora Sinurat</strong>. Saya adalah seorang pemula di dunia web development yang antusias mempelajari hal-hal baru!',
+        'skills': 'Keahlian:<br>• HTML & CSS<br>• JavaScript (Basic)<br>• Git & GitHub<br>• Problem Solving',
+        'contact': 'Hubungi saya melalui:<br>• Email: <a href="mailto:emailanda@gmail.com">emailanda@gmail.com</a><br>• GitHub: <a href="https://github.com/deborasinurat" target="_blank">github.com/deborasinurat</a>'
+    };
+
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            const cmd = input.value.trim().toLowerCase();
+            input.value = '';
+
+            if (cmd === '') return;
+
+            // Tampilkan perintah yang diketik pengguna
+            const cmdLine = document.createElement('div');
+            cmdLine.className = 'line';
+            cmdLine.innerHTML = `<span class="prompt">debora@portfolio:~$</span> ${cmd}`;
+            output.appendChild(cmdLine);
+
+            // Respon Perintah
+            if (cmd === 'clear') {
+                output.innerHTML = '';
+            } else if (commands[cmd]) {
+                const resLine = document.createElement('div');
+                resLine.className = 'line';
+                resLine.innerHTML = commands[cmd];
+                output.appendChild(resLine);
+            } else {
+                const errLine = document.createElement('div');
+                errLine.className = 'line';
+                errLine.style.color = '#ff5f56';
+                errLine.innerHTML = `Perintah '${cmd}' tidak ditemukan. Ketik <span style="color:#ffbd2e;">'help'</span> untuk bantuan.`;
+                output.appendChild(errLine);
+            }
+
+            // Gulir ke paling bawah secara otomatis
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+    });
+
+    // Menjaga fokus input saat mengklik terminal
+    document.addEventListener('click', () => input.focus());
+</script>
 
 </body>
 </html>
